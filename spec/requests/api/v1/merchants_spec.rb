@@ -164,5 +164,40 @@ RSpec.describe 'api v1 merchants controller' do
       end
     end
 
+    context 'when items dont exist but merchant does' do
+      let!(:merchant) { create(:merchant) }
+
+      before(:each) do
+        get "/api/v1/merchants/#{merchant.id}/items"
+      end
+
+      let!(:json) {JSON.parse(response.body, symbolize_names: true)}
+
+      it "returns a status code of 200" do
+        expect(response).to have_http_status(200)
+      end
+
+      it "returns the expected data Array with 3 objects" do
+        expect(json).to be_a(Hash)
+        expect(json).to have_key(:data)
+
+        expect(json[:data]).to eq([])
+      end
+    end
+
+    context 'when merchant doesnt exist' do
+
+      before(:each) do
+        get "/api/v1/merchants/19/items"
+      end
+
+      let!(:json) {JSON.parse(response.body, symbolize_names: true)}
+
+      it "returns a status code of 404 with error message" do
+        expect(response).to have_http_status(404)
+        expect(response.body).to match(/Couldn't find Merchant with 'id'=19/)
+      end
+    end
+
   end
 end
