@@ -58,4 +58,41 @@ RSpec.describe 'api v1 merchants controller' do
       end
     end
   end
+
+  describe 'GET /merchants/:id' do
+    context 'merchant exists' do
+      let!(:merchant) { create(:merchant) }
+
+      before(:each) do
+        get "/merchants/#{merchant.id}"
+      end
+
+      let!(:json) { JSON.parse(response.body, symbolize_names: true) }
+
+      it "returns status code 200" do
+        expect(response).to have_http_status(200)
+      end
+
+      it "returns the data of the chosen merchant " do
+        expect(json).to be_a(Hash)
+        expect(json).to have_key(:data)
+        expect(json[:data]).to be_a(Array)
+        expect(json[:data].length).to eq(1)
+      end
+    end
+
+    context 'merchant does not exist' do
+      
+      before(:each) do
+        get "/merchants/10"
+      end
+
+      let!(:json) { JSON.parse(response.body, symbolize_names: true) }
+
+      it "returns status code 404" do
+        expect(response).to have_http_status(404)
+        expect(response.body).to match(/merchant not found/)
+      end
+    end
+  end
 end
