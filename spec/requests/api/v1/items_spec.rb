@@ -197,7 +197,7 @@ RSpec.describe 'items api requests' do
 
       it "has correct 422 response and error message" do
         expect(response).to have_http_status(422)
-        expect(response.body).to match(//)
+        expect(response.body).to match(/Validation failed/)
       end
     end
 
