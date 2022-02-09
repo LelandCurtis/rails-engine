@@ -183,8 +183,22 @@ RSpec.describe 'items api requests' do
         expect(json[:data][:attributes][:merchant_id]).to be_a(Integer)
         expect(json[:data][:attributes][:merchant_id]).to eq(merchant.id)
       end
+    end
 
+    context 'invalid parameters' do
+      let!(:merchant) { create(:merchant) }
+      let!(:invalid_parameters) { {name: 'Bob', description: 'Some description.', merchant_id: merchant.id} }
 
+      before(:each) do
+        post '/api/v1/items', params: invalid_parameters
+      end
+
+      let!(:json) { JSON.parse(response.body, symbolize_names: true) }
+
+      it "has correct 422 response and error message" do
+        expect(response).to have_http_status(422)
+        expect(response.body).to match(//)
+      end
     end
 
   end
