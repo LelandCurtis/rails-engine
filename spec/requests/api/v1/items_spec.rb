@@ -200,6 +200,112 @@ RSpec.describe 'items api requests' do
         expect(response.body).to match(/Validation failed/)
       end
     end
+  end
 
+  describe 'PUT /api/v1/items/:id' do
+    context 'valid parameters' do
+      let!(:merchant) { create(:merchant) }
+      let!(:item)  { create(:item) }
+      let!(:valid_attributes) { {name: 'Steve', description: 'Hi Hi', unit_price: 100.3, merchant_id: merchant.id} }
+
+      before(:each) do
+        put "/api/v1/items/#{item.id}", params: valid_attributes
+      end
+
+      let!(:json) { JSON.parse(response.body, symbolize_names: true) }
+
+      it "returns a status code 200" do
+        expect(response).to have_http_status(200)
+      end
+
+      it "returns a hash of expected format" do
+        expect(:json).to be_a(Hash)
+        expect(:json).to have_key(:data)
+        expect(:json[:data]).to be_a(Hash)
+
+        expect(:json[:data]).to have_key(:id)
+        expect(:json[:data][:id]).to be_a(String)
+
+        expect(:json[:data]).to have_key(:type)
+        expect(:json[:data][:type]).to be_a(String)
+        expect(:json[:data][:type]).to eq('item')
+
+        expect(:json[:data]).to have_key(:attributes)
+        expect(:json[:data][:attributes]).to be_a(Hash)
+      end
+
+      it "has an attributes hash with the correct updated values" do
+        expect(:json[:data][:attributes]).to have_key(:name)
+        expect(:json[:data][:attributes][:name]).to be_a(String)
+        expect(:json[:data][:attributes][:name]).to eq(valid_attributes.name)
+
+        expect(:json[:data][:attributes]).to have_key(:description)
+        expect(:json[:data][:attributes][:description]).to be_a(String)
+        expect(:json[:data][:attributes][:description]).to eq(valid_attributes.description)
+
+        expect(:json[:data][:attributes]).to have_key(:unit_price)
+        expect(:json[:data][:attributes][:unit_price]).to be_a(Integer)
+        expect(:json[:data][:attributes][:unit_price]).to eq(valid_attributes.unit_price)
+
+        expect(:json[:data][:attributes]).to have_key(:merchant_id)
+        expect(:json[:data][:attributes][:merchant_id]).to be_a(Integer)
+        expect(:json[:data][:attributes][:merchant_id]).to eq(valid_attributes.merchant_id)
+      end
+
+      it "updated the model" do
+        updated_item = Item.last
+        expect(updated_item.name).to eq(valid_attributes.name)
+        expect(updated_item.description).to eq(valid_attributes.description)
+        expect(updated_item.unit_price).to eq(valid_attributes.unit_price)
+        expect(updated_item.merchant_id).to eq(valid_attributes.merchant_id)
+      end
+    end
+
+    context 'invalid parameters' do
+      let!(:merchant) { create(:merchant) }
+      let!(:item)  { create(:item, name: 'Joe') }
+      let!(:invalid_attributes) { {name: 'Al', unit_price: "asjb", merchant_id: merchant.id} }
+
+      before(:each) do
+        put "/api/v1/items/#{item.id}", params: invalid_attributes
+      end
+
+      let!(:json) { JSON.parse(response.body, symbolize_names: true) }
+
+      it "returns a status code 404 and expected error response message" do
+        expect(response).to have_http_status(404)
+        expect(response.body).to match(/Validation failed/)
+      end
+
+      it "returns an empty array" do
+        expect(:json).to eq([])
+      end
+
+      it "didn't update the model" do
+        updated_item = Item.last
+        expect(updated_item.name).to_not eq(invalid_attributes.name)
+        expect(updated_item.merchant_id).to_not eq(invalid_attributes.merchant_id)
+      end
+    end
+
+    context 'item doesnt exist' do
+      let!(:merchant) { create(:merchant) }
+      let!(:valid_attributes) { {name: 'Steve', description: 'Hi Hi', unit_price: 100.3, merchant_id: merchant.id} }
+
+      before(:each) do
+        put "/api/v1/items/43", params: valid_attributes
+      end
+
+      let!(:json) { JSON.parse(response.body, symbolize_names: true) }
+
+      it "returns a status code 404 and expected error response message" do
+        expect(response).to have_http_status(404)
+        expect(response.body).to match(/Record not found/)
+      end
+
+      it "returns an empty array" do
+        expect(:json).to eq([])
+      end
+    end
   end
 end
