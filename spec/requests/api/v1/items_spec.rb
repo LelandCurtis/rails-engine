@@ -264,7 +264,7 @@ RSpec.describe 'items api requests' do
       end
     end
 
-    context 'invalid parameters' do
+    context 'invalid parameters - bad price' do
       let!(:merchant) { create(:merchant) }
       let!(:item)  { create(:item, name: 'Joe') }
       let!(:invalid_attributes) { {name: 'Al', unit_price: "asjb", merchant_id: merchant.id} }
@@ -273,9 +273,29 @@ RSpec.describe 'items api requests' do
         patch "/api/v1/items/#{item.id}", params: invalid_attributes
       end
 
-      it "returns a status code 422 and expected error response message" do
-        expect(response).to have_http_status(422)
+      it "returns a status code 404 and expected error response message" do
+        expect(response).to have_http_status(404)
         expect(response.body).to match(/Unit price is not a number/)
+      end
+
+      it "didn't update the model" do
+        updated_item = Item.last
+        expect(updated_item.name).to_not eq(invalid_attributes[:name])
+        expect(updated_item.merchant_id).to_not eq(invalid_attributes[:merchant_id])
+      end
+    end
+
+    context 'invalid parameters - bad merchant id' do
+      let!(:item)  { create(:item, name: 'Joe') }
+      let!(:invalid_attributes) { {name: 'Al',  merchant_id: 24} }
+
+      before(:each) do
+        patch "/api/v1/items/#{item.id}", params: invalid_attributes
+      end
+
+      it "returns a status code 404 and expected error response message" do
+        expect(response).to have_http_status(404)
+        expect(response.body).to match(/Merchant must exist/)
       end
 
       it "didn't update the model" do
@@ -296,6 +316,74 @@ RSpec.describe 'items api requests' do
       it "returns a status code 404 and expected error response message" do
         expect(response).to have_http_status(404)
         expect(response.body).to match(/Couldn't find Item with 'id'=43/)
+      end
+    end
+  end
+
+  describe 'DESTROY /api/v1/items/:id' do
+    context 'item exists' do
+      let!(:item) { create(:item) }
+      let!(:item_id) { item.id }
+
+      before(:each) do
+        delete "/api/v1/items/#{item.id}"
+      end
+
+      it "has correct 204 response" do
+        expect(response).to have_http_status(204)
+      end
+
+      it "returns no body" do
+        expect(response.body).to be_empty
+      end
+
+      it "deletes the item" do
+        expect(Item.exists?(item_id)).to eq(false)
+      end
+    end
+
+    context 'item does not exist'do
+
+      before(:each) do
+        delete "/api/v1/items/22"
+      end
+
+      it "has correct 404 response and error message" do
+        expect(response).to have_http_status(404)
+        expect(response.body).to match(/Couldn't find Item with 'id'=22/)
+      end
+    end
+
+    context 'item is the only item on an invoice' do
+      let!(:item) { create(:item) }
+      let!(:invoice) { create(:invoice) }
+      let!(:invoice_item) { create(:invoice_item, item: item, invoice: invoice) }
+      let(:item_id) { item.id }
+      let!(:invoice_id) { invoice.id }
+      let!(:invoice_item_id) { invoice_item.id }
+
+      before(:each) do
+        delete "/api/v1/items/#{item.id}"
+      end
+
+      it "has correct 204 response" do
+        expect(response).to have_http_status(204)
+      end
+
+      it "returns no body" do
+        expect(response.body).to be_empty
+      end
+
+      it "deletes the item" do
+        expect(Item.exists?(item_id)).to eq(false)
+      end
+
+      it "deletes the invoice" do
+        expect(Invoice.exists?(invoice_id)).to eq(false)
+      end
+
+      it "deletes the invoice_item" do
+        expect(InvoiceItem.exists?(invoice_item_id)).to eq(false)
       end
     end
   end
