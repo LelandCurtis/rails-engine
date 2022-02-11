@@ -6,6 +6,10 @@ Rails.application.routes.draw do
         get '/find', to: 'find#show'
       end
 
+      namespace :merchants do
+        get '/find_all', to: 'find_all#index'
+      end
+
       resources :merchants, only: [:index, :show] do
         resources :items, only: [:index], controller: :merchant_items
       end
