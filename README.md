@@ -1,11 +1,3 @@
-
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/LelandCurtis/rails-engine">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
 <h1 align="center">Rails Engine</h1>
 
   <p align="center">
@@ -46,9 +38,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This E-Commerce application API provides users access to data about merchants, items, customers, invoices, and transactions. It provides the following endpoints:
-
-### Endpoints
+This E-Commerce application API provides users access to data about merchants, items, customers, invoices, and transactions. It is built using ruby on rails. It provides users access to the following endpoints:
 
 #### Merchants:
   * get all merchants
@@ -66,9 +56,8 @@ This E-Commerce application API provides users access to data about merchants, i
   * find one item by minimum price and/or maximum price
   * find all merchants by name
 
+#### Database Schema:
 [![Database Schema][database_schema]](https://user-images.githubusercontent.com/15107515/152901359-aadf9cd8-4350-4ce6-8bd3-332171d2bebf.png)
-
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following:  `project_description`
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -99,19 +88,31 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
    ```sh
    git clone https://github.com/LelandCurtis/rails-engine.git
    ```
-3. Install NPM packages
+3. Install Ruby 2.7.2 and Rails 5.2.6
    ```sh
-   npm install
+   rbenv 
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+3. Install required gems using the included gemfile
+   ```sh
+   bundle install
    ```
+3. Create Postgresql database, run migrations and seed database
+   ```sh
+   rails db:{create,migrate,seed}
+   ```
+3. Launch local server
+   ```sh
+   rails s
+   ```
+3. Use a browser or tool like PostMan to explore the API on http://localhost:3000
+   ```sh
+   http://localhost:3000
+   ```
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
