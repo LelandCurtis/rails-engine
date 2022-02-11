@@ -3,7 +3,7 @@ class Api::V1::Merchants::FindAllController < ApplicationController
     if bad_request?
       json_response({data: [], error: "Bad request"}, :bad_request)
     elsif Merchant.find_all(name: query_params[:name]) == []
-      json_response({data: {id: nil, type: "merchant", attributes: []}, error: "No merchants found"})
+      json_response({data: [], error: "No merchants found"})
     else
       json_response(MerchantSerializer.new(Merchant.find_all(name: query_params[:name])))
     end
