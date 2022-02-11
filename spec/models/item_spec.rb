@@ -99,6 +99,21 @@ RSpec.describe Item, type: :model do
           expect(merchant_1.items.search(name: 'bat', min_price: 6.0, max_price: 160.0)).to eq(item_5)
         end
       end
+
+      context 'sad paths' do
+        context 'when no items exist in database' do
+          it "returns an empty array if Item model is empty" do
+            expect(Item.search).to eq([])
+          end
+        end
+
+        context 'when search returns no items' do
+          it "returns an empty array" do
+            item = create(:item, name: 'zebra')
+            expect(Item.search(name: 'baloon')).to eq([])
+          end
+        end
+      end
     end
   end
 end
