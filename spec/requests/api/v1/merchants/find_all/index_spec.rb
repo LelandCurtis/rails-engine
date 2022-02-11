@@ -10,39 +10,40 @@ RSpec.describe 'api/v1/merchants/find_all' do
       let(:query) { '?name=bat' }
 
       before(:each) do
-        get "/api/v1/merchants/find#{query}"
+        get "/api/v1/merchants/find_all#{query}"
       end
 
       let!(:json) { JSON.parse(response.body, symbolize_names: true) }
+      let!(:merchant) { json[:data].sample(1)[0] }
 
       it "returns a status code of 200" do
         expect(response).to have_http_status(200)
       end
 
-      it "returns the expected data Hash" do
+      it "returns the expected array of merchant data" do
         expect(json).to be_a(Hash)
         expect(json).to have_key(:data)
 
-        expect(json[:data]).to be_a(Hash)
+        expect(json[:data]).to be_a(Array)
       end
 
       it "returns the expected hash structure for the merchant" do
-        expect(json[:data]).to be_a(Hash)
+        expect(merchant).to be_a(Hash)
 
-        expect(json[:data]).to have_key(:id)
-        expect(json[:data][:id]).to be_a(String)
+        expect(merchant).to have_key(:id)
+        expect(merchant[:id]).to be_a(String)
 
-        expect(json[:data]).to have_key(:type)
-        expect(json[:data][:type]).to be_a(String)
-        expect(json[:data][:type]).to eq('merchant')
+        expect(merchant).to have_key(:type)
+        expect(merchant[:type]).to be_a(String)
+        expect(merchant[:type]).to eq('merchant')
 
-        expect(json[:data]).to have_key(:attributes)
-        expect(json[:data][:attributes]).to be_a(Hash)
+        expect(merchant).to have_key(:attributes)
+        expect(merchant[:attributes]).to be_a(Hash)
       end
 
       it "returns the expected merchant attributes" do
-        expect(json[:data][:attributes]).to have_key(:name)
-        expect(json[:data][:attributes][:name]).to be_a(String)
+        expect(merchant[:attributes]).to have_key(:name)
+        expect(merchant[:attributes][:name]).to be_a(String)
       end
     end
   end
@@ -51,7 +52,7 @@ RSpec.describe 'api/v1/merchants/find_all' do
     context 'search returns 0 merchants' do
       let!(:merchant) { create(:merchant, name: "zebra") }
       before(:each) do
-        get '/api/v1/merchants/find?name=hello'
+        get '/api/v1/merchants/find_all?name=hello'
       end
 
       it "returns status code 200 and empty" do
@@ -75,14 +76,14 @@ RSpec.describe 'api/v1/merchants/find_all' do
         expect(json[:data][:attributes]).to be_a(Array)
         expect(json[:data][:attributes]).to eq([])
 
-        expect(json[:error]).to match(/No records found/)
+        expect(json[:error]).to match(/No merchants found/)
       end
     end
 
     context 'search fields are empty' do
       let!(:merchant) { create(:merchant, name: "zebra") }
       before(:each) do
-        get '/api/v1/merchants/find?name='
+        get '/api/v1/merchants/find_all?name='
       end
 
       it "returns status code 400 and empty" do
