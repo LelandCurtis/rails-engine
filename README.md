@@ -1,20 +1,3 @@
-<div id="top"></div>
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
 
 <!-- PROJECT LOGO -->
 <br />
@@ -23,19 +6,10 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">Rails Engine</h3>
+<h1 align="center">Rails Engine</h1>
 
   <p align="center">
-    project_description
-    <br />
-    <a href="https://github.com/LelandCurtis/rails-engine"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/LelandCurtis/rails-engine">View Demo</a>
-    ·
-    <a href="https://github.com/LelandCurtis/rails-engine/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/LelandCurtis/rails-engine/issues">Request Feature</a>
+    An E-Commerce Application API
   </p>
 </div>
 
@@ -72,7 +46,26 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+This E-Commerce application API provides users access to data about merchants, items, customers, invoices, and transactions. It provides the following endpoints:
+
+### Endpoints
+
+#### Merchants:
+  * get all merchants
+  * get one merchant
+  * get all items held by a given merchant
+#### Items:
+  * get all items
+  * get one item
+  * create an item
+  * edit an item
+  * delete an item
+  * get the merchant data for a given item ID
+#### Search:
+  * find one item by name
+  * find one item by minimum price and/or maximum price
+  * find all merchants by name
+
 [![Database Schema][database_schema]](https://user-images.githubusercontent.com/15107515/152901359-aadf9cd8-4350-4ce6-8bd3-332171d2bebf.png)
 
 Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following:  `project_description`
