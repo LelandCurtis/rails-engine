@@ -53,7 +53,7 @@ This E-Commerce application API provides users access to data about merchants, i
   * find all merchants by name
 
 #### Database Schema:
-[![Database Schema][database_schema]](https://user-images.githubusercontent.com/15107515/152901359-aadf9cd8-4350-4ce6-8bd3-332171d2bebf.png)
+![Database Schema](https://user-images.githubusercontent.com/15107515/153533864-bc7e307d-d750-4857-83e0-e8bc017f99f8.png)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
