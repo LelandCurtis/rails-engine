@@ -203,7 +203,7 @@ RSpec.describe 'api/v1/items/find' do
     context 'search fields include name, min_price and max_price' do
       let!(:item) { create(:item, name: "zebra") }
       before(:each) do
-        get "/api/v1/items/find?name=zebra&max_price=50&max_price=500"
+        get "/api/v1/items/find?name=zebra&min_price=50&max_price=500"
       end
 
       it "returns status code 400" do
@@ -224,7 +224,7 @@ RSpec.describe 'api/v1/items/find' do
     context 'min_price is greater than max_price' do
       let!(:item) { create(:item, name: "zebra") }
       before(:each) do
-        get "/api/v1/items/find?&max_price=500&max_price=50"
+        get "/api/v1/items/find?&min_price=500&max_price=50"
       end
 
       it "returns status code 400" do
