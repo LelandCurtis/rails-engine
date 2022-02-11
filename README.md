@@ -75,17 +75,6 @@ This E-Commerce application API provides users access to data about merchants, i
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
 ### Installation
 
 2. Clone the repo
@@ -93,9 +82,7 @@ This is an example of how to list things you need to use the software and how to
    git clone https://github.com/LelandCurtis/rails-engine.git
    ```
 3. Install Ruby 2.7.2 and Rails 5.2.6
-   ```sh
-   rbenv 
-   ```
+
 3. Install required gems using the included gemfile
    ```sh
    bundle install
@@ -116,32 +103,23 @@ This is an example of how to list things you need to use the software and how to
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+## API Endpoints
 
-
-<!-- USAGE EXAMPLES
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#top">back to top</a>)</p>
--->
-
-
-<!-- ROADMAP
-## Roadmap
-
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/LelandCurtis/rails-engine/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#top">back to top</a>)</p>
--->
-
+#### Merchants:
+  * get all merchants `http://localhost:3000/api/v1/merchants`
+  * get one merchant
+  * get all items held by a given merchant
+#### Items:
+  * get all items
+  * get one item
+  * create an item
+  * edit an item
+  * delete an item
+  * get the merchant data for a given item ID
+#### Search:
+  * find one item by name
+  * find one item by minimum price and/or maximum price
+  * find all merchants by name
 
 <!-- CONTRIBUTING -->
 ## Contributing
