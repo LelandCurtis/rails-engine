@@ -40,6 +40,7 @@ class Api::V1::Items::FindController < ApplicationController
     [:name, :min_price].all?{|key| query_params.keys.include?(key)} ||
     [:name, :max_price].all?{|key| query_params.keys.include?(key)} ||
     query_params[:min_price] != nil && Float(query_params[:min_price]) < 0 ||
-    query_params[:max_price] != nil && Float(query_params[:max_price]) < 0
+    query_params[:max_price] != nil && Float(query_params[:max_price]) < 0 ||
+    query_params[:min_price] != nil && query_params[:max_price] != nil && Float(query_params[:min_price]) > Float(query_params[:max_price])
   end
 end

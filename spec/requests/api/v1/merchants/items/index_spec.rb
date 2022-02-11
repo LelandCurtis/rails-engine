@@ -62,15 +62,21 @@ RSpec.describe 'GET /merchants/:merchant_id/items' do
 
     let!(:json) {JSON.parse(response.body, symbolize_names: true)}
 
-    it "returns a status code of 200" do
-      expect(response).to have_http_status(200)
+    it "returns a status code of 404" do
+      expect(response).to have_http_status(404)
     end
 
-    it "returns the expected data Array with 3 objects" do
+    it "returns a hash with message and errors keys" do
       expect(json).to be_a(Hash)
-      expect(json).to have_key(:data)
+      expect(json).to have_key(:message)
 
-      expect(json[:data]).to eq([])
+      expect(json[:message]).to eq('Your query could not be completed')
+    end
+
+    it "returns an errors array" do
+      expect(json).to have_key(:errors)
+      expect(json[:errors]).to be_a(Array)
+      expect(json[:errors][0]).to match(/Merchant has no items/)
     end
   end
 
