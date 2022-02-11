@@ -221,6 +221,27 @@ RSpec.describe 'api/v1/items/find' do
       end
     end
 
+    context 'min_price is greater than max_price' do
+      let!(:item) { create(:item, name: "zebra") }
+      before(:each) do
+        get "/api/v1/items/find?&max_price=500&max_price=50"
+      end
+
+      it "returns status code 400" do
+        expect(response).to have_http_status(400)
+      end
+
+      it "returns an error response" do
+        json = JSON.parse(response.body, symbolize_names: true)
+        expect(json).to be_a(Hash)
+        expect(json).to have_key(:data)
+        expect(json[:data]).to eq([])
+
+        expect(json).to have_key(:error)
+        expect(json[:error]).to match(/Bad request/)
+      end
+    end
+
   end
 
 end
