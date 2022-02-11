@@ -106,38 +106,20 @@ This E-Commerce application API provides users access to data about merchants, i
 ## API Endpoints
 
 #### Merchants:
-  * get all merchants `http://localhost:3000/api/v1/merchants`
-  * get one merchant
-  * get all items held by a given merchant
+  * get all merchants `GET http://localhost:3000/api/v1/merchants`
+  * get one merchant `GET http://localhost:3000/api/v1/merchants/:merchant_id`
+  * get all items held by a given merchant `GET http://localhost:3000/api/v1/merchants/:merchant_id/items`
 #### Items:
-  * get all items
-  * get one item
-  * create an item
-  * edit an item
-  * delete an item
-  * get the merchant data for a given item ID
+  * get all items `GET http://localhost:3000/api/v1/items`
+  * get one item `GET http://localhost:3000/api/v1/items/:item_id`
+  * create an item `POST http://localhost:3000/api/v1/items/:item_id`
+  * edit an item `PUT http://localhost:3000/api/v1/items/:item_id`
+  * delete an item `DESTROY http://localhost:3000/api/v1/items/:item_id`
+  * get the merchant data for a given item ID `GET http://localhost:3000/api/v1/items/:item_id/merchant`
 #### Search:
-  * find one item by name
-  * find one item by minimum price and/or maximum price
-  * find all merchants by name
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
+  * find one item by name `GET http://localhost:3000/api/v1/items/find?name=some_query`
+  * find one item by minimum price and/or maximum price `GET http://localhost:3000/api/v1/items/find?min_price=5.00&max_price=500.00`
+  * find all merchants by name `GET http://localhost:3000/api/v1/merchants/find_all?name=some_query`
 
 <!-- LICENSE -->
 ## License
@@ -156,33 +138,3 @@ Leland Curtis - lelandcurtis88@gmail.com
 Project Link: [https://github.com/LelandCurtis/rails-engine](https://github.com/LelandCurtis/rails-engine)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-* []()
-* []()
-* []()
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/LelandCurtis/rails-engine.svg?style=for-the-badge
-[contributors-url]: https://github.com/LelandCurtis/rails-engine/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/LelandCurtis/rails-engine.svg?style=for-the-badge
-[forks-url]: https://github.com/LelandCurtis/rails-engine/network/members
-[stars-shield]: https://img.shields.io/github/stars/LelandCurtis/rails-engine.svg?style=for-the-badge
-[stars-url]: https://github.com/LelandCurtis/rails-engine/stargazers
-[issues-shield]: https://img.shields.io/github/issues/LelandCurtis/rails-engine.svg?style=for-the-badge
-[issues-url]: https://github.com/LelandCurtis/rails-engine/issues
-[license-shield]: https://img.shields.io/github/license/LelandCurtis/rails-engine.svg?style=for-the-badge
-[license-url]: https://github.com/LelandCurtis/rails-engine/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/leland-curtis-b9a13a2b
-[product-screenshot]: images/screenshot.png
-[database_schema]: https://user-images.githubusercontent.com/15107515/152901359-aadf9cd8-4350-4ce6-8bd3-332171d2bebf.png
