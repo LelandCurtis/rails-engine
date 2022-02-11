@@ -7,4 +7,17 @@ class Item < ApplicationRecord
 
   validates_presence_of :name, :description, :unit_price
   validates_numericality_of  :unit_price
+
+  def self.search(name: '', min_price: 0.0, max_price: nil)
+    return [] if Item.all.length == 0
+    max_price = Item.maximum(:unit_price) if max_price == nil    
+
+    item = Item.where('name ILIKE ?', "%#{name}%")
+    .where("unit_price >= #{min_price} AND unit_price <= #{max_price}")
+    .order(name: :asc).limit(1)[0]
+
+    item = [] if item == nil
+    item
+  end
+
 end
