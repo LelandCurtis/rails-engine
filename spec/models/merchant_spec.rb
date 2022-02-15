@@ -59,6 +59,10 @@ RSpec.describe Merchant, type: :model do
           expect(Merchant.with_most_revenue(3)).to eq([merchant_3, merchant_1, merchant_2])
         end
 
+        it "returns a total_revenue column" do
+          expect(Merchant.with_most_revenue(3)[0].total_revenue).to eq(45.0)
+        end
+
         it "returns the correct number of merchants" do
           expect(Merchant.with_most_revenue(2)).to eq([merchant_3, merchant_1])
           expect(Merchant.with_most_revenue(1)).to eq([merchant_3])
