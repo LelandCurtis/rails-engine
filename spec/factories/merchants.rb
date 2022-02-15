@@ -34,7 +34,9 @@ FactoryBot.define do
         transaction_result {'success'}
         invoice_item_unit_price {150.00}
         invoice_item_quantity {4}
-        invoice {create(:invoice, customer: customer)}
+        invoice_status {'shipped'}
+        invoice {create(:invoice, customer: customer, status: invoice_status)}
+
       end
       after(:create) do |merchant, evaluator|
         evaluator.transaction_count.times do
