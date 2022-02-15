@@ -48,5 +48,26 @@ RSpec.describe Merchant, type: :model do
         end
       end
     end
+
+    describe 'with_most_revenue' do
+      context 'merchants exist' do
+        let!(:merchant_1) { create(:merchant_with_transactions, name: 'Apple', invoice_item_quantity: 1, invoice_item_unit_price: 10.50) }
+        let!(:merchant_2) { create(:merchant_with_transactions, name: 'Target', invoice_item_quantity: 2, invoice_item_unit_price: 5.00) }
+        let!(:merchant_3) { create(:merchant_with_transactions, name: 'Walmart', invoice_item_quantity: 3, invoice_item_unit_price: 15.00) }
+
+        it "returns an array of merchants by total revenue" do
+          expect(Merchant.with_most_revenue(3)).to eq([merchant_3, merchant_1, merchant_2])
+        end
+
+        it "returns the correct number of merchants" do
+          expect(Merchant.with_most_revenue(2)).to eq([merchant_3, merchant_1)
+          expect(Merchant.with_most_revenue(1)).to eq([merchant_3)
+        end
+
+        it "returns the most available" do
+          expect(Merchant.with_most_revenue(5)).to eq([merchant_3, merchant_1, merchant_2])
+        end
+      end
+    end
   end
 end
