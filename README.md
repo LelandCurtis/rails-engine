@@ -40,6 +40,7 @@ This E-Commerce application API provides users access to data about merchants, i
   * get all merchants
   * get one merchant
   * get all items held by a given merchant
+  * get merchants by most items sold
 #### Items:
   * get all items
   * get one item
@@ -107,6 +108,7 @@ This E-Commerce application API provides users access to data about merchants, i
   * get all merchants `GET http://localhost:3000/api/v1/merchants`
   * get one merchant `GET http://localhost:3000/api/v1/merchants/:merchant_id`
   * get all items held by a given merchant `GET http://localhost:3000/api/v1/merchants/:merchant_id/items`
+  * get merchants by most items sold 'GET http://localhost:3000/api/v1/merchants/most_items?quantity=4`
 #### Items:
   * get all items `GET http://localhost:3000/api/v1/items`
   * get one item `GET http://localhost:3000/api/v1/items/:item_id`
@@ -119,7 +121,7 @@ This E-Commerce application API provides users access to data about merchants, i
   * find one item by minimum price and/or maximum price `GET http://localhost:3000/api/v1/items/find?min_price=5.00&max_price=500.00`
   * find all merchants by name `GET http://localhost:3000/api/v1/merchants/find_all?name=some_query`
 #### Revenue:
-  * get merchants by most revenue `/api/v1/revenue/merchants?quantity=4`
+  * get merchants by most revenue `GET http://localhost:3000/api/v1/revenue/merchants?quantity=4`
 
 <!-- LICENSE -->
 ## License
