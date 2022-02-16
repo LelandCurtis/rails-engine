@@ -1,8 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe 'Merchants with Most Revenue' do
+RSpec.describe 'json with Most Revenue' do
   context 'merchants exist' do
-    let!(:merchant) { create(:merchant) }
+    let!(:merchant_1) { create(:merchant_with_transactions, name: 'Apple', invoice_item_quantity: 1, invoice_item_unit_price: 10.50) }
+    let!(:merchant_2) { create(:merchant_with_transactions, name: 'Target', invoice_item_quantity: 2, invoice_item_unit_price: 5.00) }
+    let!(:merchant_3) { create(:merchant_with_transactions, name: 'Walmart', invoice_item_quantity: 3, invoice_item_unit_price: 15.00) }
     let!(:quantity) { 3 }
 
     before(:each) do
@@ -10,16 +12,17 @@ RSpec.describe 'Merchants with Most Revenue' do
     end
 
     let!(:json) { JSON.parse(response.body, symbolize_names: true) }
+    let!(:merchant) { json[:data].sample(1)[0] }
 
     it "returns status code 200" do
       expect(response).to have_http_status(200)
     end
 
     it "has an array of merchants" do
-      expect(merchants).to be_a(Hash)
-      expect(merchants).to have_key(:data)
-      expect(merchants[:data]).to be_a(Array)
-      expect(merchants[:data].length).to eq(quantity)
+      expect(json).to be_a(Hash)
+      expect(json).to have_key(:data)
+      expect(json[:data]).to be_a(Array)
+      expect(json[:data].length).to eq(quantity)
     end
 
     it "has id, type, and attribute hash for each item" do
@@ -36,7 +39,6 @@ RSpec.describe 'Merchants with Most Revenue' do
     it "has an attribute hash with all required attributes " do
       expect(merchant[:attributes]).to have_key(:name)
       expect(merchant[:attributes][:name]).to be_a(String)
-      expect(json[:data][:attributes][:name]).to eq(merchant.name)
 
       expect(merchant[:attributes]).to have_key(:revenue)
       expect(merchant[:attributes][:revenue]).to be_a(Float)
