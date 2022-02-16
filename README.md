@@ -51,6 +51,8 @@ This E-Commerce application API provides users access to data about merchants, i
   * find one item by name
   * find one item by minimum price and/or maximum price
   * find all merchants by name
+#### Revenue
+  * get merchants by most revenue
 
 #### Database Schema:
 ![Database Schema](https://user-images.githubusercontent.com/15107515/153533864-bc7e307d-d750-4857-83e0-e8bc017f99f8.png)
@@ -116,6 +118,8 @@ This E-Commerce application API provides users access to data about merchants, i
   * find one item by name `GET http://localhost:3000/api/v1/items/find?name=some_query`
   * find one item by minimum price and/or maximum price `GET http://localhost:3000/api/v1/items/find?min_price=5.00&max_price=500.00`
   * find all merchants by name `GET http://localhost:3000/api/v1/merchants/find_all?name=some_query`
+#### Revenue:
+  * get merchants by most revenue `/api/v1/revenue/merchants?quantity=4`
 
 <!-- LICENSE -->
 ## License
