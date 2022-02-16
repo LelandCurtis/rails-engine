@@ -48,5 +48,56 @@ RSpec.describe Merchant, type: :model do
         end
       end
     end
+
+    describe 'with_most_revenue' do
+      context 'merchants exist' do
+        let!(:merchant_1) { create(:merchant_with_transactions, name: 'Apple', invoice_item_quantity: 1, invoice_item_unit_price: 10.50) }
+        let!(:merchant_2) { create(:merchant_with_transactions, name: 'Target', invoice_item_quantity: 2, invoice_item_unit_price: 5.00) }
+        let!(:merchant_3) { create(:merchant_with_transactions, name: 'Walmart', invoice_item_quantity: 3, invoice_item_unit_price: 15.00) }
+
+        it "returns an array of merchants by total revenue" do
+          expect(Merchant.with_most_revenue(3)).to eq([merchant_3, merchant_1, merchant_2])
+        end
+
+        it "returns correct array with string input" do
+          expect(Merchant.with_most_revenue("3")).to eq([merchant_3, merchant_1, merchant_2])
+        end
+
+        it "returns a total_revenue column" do
+          expect(Merchant.with_most_revenue(3)[0].revenue).to eq(45.0)
+        end
+
+        it "returns the correct number of merchants" do
+          expect(Merchant.with_most_revenue(2)).to eq([merchant_3, merchant_1])
+          expect(Merchant.with_most_revenue(1)).to eq([merchant_3])
+        end
+
+        it "returns the most available" do
+          expect(Merchant.with_most_revenue(5)).to eq([merchant_3, merchant_1, merchant_2])
+        end
+      end
+
+      context 'when merchants with no successful transactions exist' do
+        let!(:merchant_1) { create(:merchant_with_transactions, name: 'Apple', invoice_item_quantity: 1, invoice_item_unit_price: 10.50) }
+        let!(:merchant_2) { create(:merchant_with_transactions, name: 'Target', invoice_item_quantity: 2, invoice_item_unit_price: 5.00) }
+        let!(:merchant_3) { create(:merchant_with_transactions, name: 'Walmart', invoice_item_quantity: 3, invoice_item_unit_price: 15.00) }
+        let!(:merchant_4) { create(:merchant_with_transactions, name: 'Kroger', invoice_item_quantity: 4, invoice_item_unit_price: 15.00, transaction_result: 'failed') }
+
+        it "returns the correct array of merchants by total revenue" do
+          expect(Merchant.with_most_revenue(3)).to eq([merchant_3, merchant_1, merchant_2])
+        end
+      end
+
+      context 'when merchants with invoices without status shipped exist' do
+        let!(:merchant_1) { create(:merchant_with_transactions, name: 'Apple', invoice_item_quantity: 1, invoice_item_unit_price: 10.50) }
+        let!(:merchant_2) { create(:merchant_with_transactions, name: 'Target', invoice_item_quantity: 2, invoice_item_unit_price: 5.00) }
+        let!(:merchant_3) { create(:merchant_with_transactions, name: 'Walmart', invoice_item_quantity: 3, invoice_item_unit_price: 15.00) }
+        let!(:merchant_4) { create(:merchant_with_transactions, name: 'Kroger', invoice_item_quantity: 4, invoice_item_unit_price: 15.00, invoice_status: 'pending') }
+
+        it "returns the correct array of merchants by total revenue" do
+          expect(Merchant.with_most_revenue(3)).to eq([merchant_3, merchant_1, merchant_2])
+        end
+      end
+    end
   end
 end
