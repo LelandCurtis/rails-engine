@@ -46,8 +46,8 @@ RSpec.describe 'api/v1/merchants/most_items?quantity=x' do
         expect(merchant[:attributes]).to have_key(:name)
         expect(merchant[:attributes][:name]).to be_a(String)
 
-        expect(merchant[:attributes]).to have_key(:count)
-        expect(merchant[:attributes][:count]).to be_a(Integer)
+        expect(merchant[:attributes]).to have_key(:item_count)
+        expect(merchant[:attributes][:item_count]).to be_a(Integer)
       end
     end
   end
