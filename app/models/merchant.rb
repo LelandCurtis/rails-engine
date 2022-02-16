@@ -15,28 +15,49 @@ class Merchant < ApplicationRecord
   end
 
   def self.with_most_revenue(quantity)
-    if quantity.to_i != 0
-      Merchant.joins(invoices: [:invoice_items, :transactions])
-      .where(invoices: {status: 'shipped'}, transactions: {result: 'success'})
-      .select('merchants.id, merchants.name, SUM(invoice_items.unit_price * invoice_items.quantity) AS revenue')
-      .group(:id)
-      .order(revenue: :desc)
-      .limit(quantity.to_i)
-    else
-      []
-    end
+    Merchant.joins(invoices: [:invoice_items, :transactions])
+    .where(invoices: {status: 'shipped'}, transactions: {result: 'success'})
+    .select('merchants.id, merchants.name, SUM(invoice_items.unit_price * invoice_items.quantity) AS revenue')
+    .group(:id)
+    .order(revenue: :desc)
+    .limit(quantity)
+
+    # if quantity.to_i != 0
+    #   Merchant.joins(invoices: [:invoice_items, :transactions])
+    #   .where(invoices: {status: 'shipped'}, transactions: {result: 'success'})
+    #   .select('merchants.id, merchants.name, SUM(invoice_items.unit_price * invoice_items.quantity) AS revenue')
+    #   .group(:id)
+    #   .order(revenue: :desc)
+    #   .limit(quantity.to_i)
+    # else
+    #   []
+    # end
   end
 
   def self.by_most_items(quantity)
     if quantity.to_i != 0
       Merchant.joins(invoices: [:invoice_items, :transactions])
       .where(invoices: {status: 'shipped'}, transactions: {result: 'success'})
-      .select("merchants.id, merchants.name, SUM(invoice_items.quantity) AS item_count")
+      .select("merchants.id, merchants.name, SUM(invoice_items.quantity) AS count")
       .group(:id)
-      .order(item_count: :desc)
+      .order("count desc")
       .limit(quantity.to_i)
     else
       []
     end
   end
+
+  # def self.revenue_across_dates(start_date, end_date)
+  #   Merchant.joins(invoices: [:invoice_items, :transactions])
+  #   .where(invoices: {status: 'shipped'}, transactions: {result: 'success'}, transactions: {"created_at > #{start_date} AND created_at < #{end_date}"})
+  #   .select("SUM(invoice_items.quantity * invoice_items.unit_count) AS revenue")
+  #   .group(:id)
+  # end
+  #
+  # def self.total_revenue(id)
+  #   Merchant.joins(invoices: [:invoice_items, :transactions])
+  #   .where(invoices: {status: 'shipped'}, transactions: {result: 'success'}, merchants: {id: id})
+  #   .select("merchants.id, SUM(invoice_items.quantity) AS item_count")
+  #   .group(:id)
+  # end
 end

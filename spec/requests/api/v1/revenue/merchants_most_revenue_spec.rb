@@ -12,7 +12,7 @@ RSpec.describe 'json with Most Revenue' do
     end
 
     let!(:json) { JSON.parse(response.body, symbolize_names: true) }
-    let!(:merchant) { json[:data].sample(1)[0] }
+    let!(:merchant) { json[:data][0] }
 
     it "returns status code 200" do
       expect(response).to have_http_status(200)
@@ -42,6 +42,7 @@ RSpec.describe 'json with Most Revenue' do
 
       expect(merchant[:attributes]).to have_key(:revenue)
       expect(merchant[:attributes][:revenue]).to be_a(Float)
+      expect(merchant[:attributes][:revenue]).to eq(45.0)
     end
   end
 end

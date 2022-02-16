@@ -115,7 +115,7 @@ RSpec.describe Merchant, type: :model do
         end
 
         it "returns a count column" do
-          expect(Merchant.by_most_items(3)[0].item_count).to eq(500)
+          expect(Merchant.by_most_items(3)[0].count).to eq(500)
         end
 
         it "returns the correct number of merchants" do
