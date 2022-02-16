@@ -15,11 +15,15 @@ class Merchant < ApplicationRecord
   end
 
   def self.with_most_revenue(quantity)
-    Merchant.joins(invoices: [:invoice_items, :transactions])
-    .where(invoices: {status: 'shipped'}, transactions: {result: 'success'})
-    .select('merchants.id, merchants.name, SUM(invoice_items.unit_price * invoice_items.quantity) AS total_revenue')
-    .group(:id)
-    .order(total_revenue: :desc)
-    .limit(quantity)
+    if quantity.to_i != 0
+      Merchant.joins(invoices: [:invoice_items, :transactions])
+      .where(invoices: {status: 'shipped'}, transactions: {result: 'success'})
+      .select('merchants.id, merchants.name, SUM(invoice_items.unit_price * invoice_items.quantity) AS revenue')
+      .group(:id)
+      .order(revenue: :desc)
+      .limit(quantity.to_i)
+    else
+      []
+    end
   end
 end
