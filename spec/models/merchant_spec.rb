@@ -99,5 +99,45 @@ RSpec.describe Merchant, type: :model do
         end
       end
     end
+
+    describe 'by_most_items' do
+      context 'merchants exist' do
+        let!(:merchant_1) { create(:merchant_with_transactions, name: 'Apple', invoice_item_quantity: 50) }
+        let!(:merchant_2) { create(:merchant_with_transactions, name: 'Target', invoice_item_quantity: 5) }
+        let!(:merchant_3) { create(:merchant_with_transactions, name: 'Walmart', invoice_item_quantity: 500) }
+
+        it "returns an array of merchants by total revenue" do
+          expect(Merchant.by_most_items(3)).to eq([merchant_3, merchant_1, merchant_2])
+        end
+
+        it "returns correct array with string input" do
+          expect(Merchant.by_most_items("3")).to eq([merchant_3, merchant_1, merchant_2])
+        end
+
+        it "returns a count column" do
+          expect(Merchant.by_most_items(3)[0].item_count).to eq(500)
+        end
+
+        it "returns the correct number of merchants" do
+          expect(Merchant.by_most_items(2)).to eq([merchant_3, merchant_1])
+          expect(Merchant.by_most_items(1)).to eq([merchant_3])
+        end
+
+        it "returns the most available" do
+          expect(Merchant.by_most_items(5)).to eq([merchant_3, merchant_1, merchant_2])
+        end
+      end
+
+      context 'when merchants with no successful transactions exist' do
+        let!(:merchant_1) { create(:merchant_with_transactions, name: 'Apple', invoice_item_quantity: 50) }
+        let!(:merchant_2) { create(:merchant_with_transactions, name: 'Target', invoice_item_quantity: 5) }
+        let!(:merchant_3) { create(:merchant_with_transactions, name: 'Walmart', invoice_item_quantity: 500) }
+        let!(:merchant_4) { create(:merchant_with_transactions, name: 'Walmart', invoice_item_quantity: 5000, transaction_result: 'failed') }
+
+        it "returns the correct array of merchants by total revenue" do
+          expect(Merchant.by_most_items(3)).to eq([merchant_3, merchant_1, merchant_2])
+        end
+      end
+    end
   end
 end

@@ -26,4 +26,17 @@ class Merchant < ApplicationRecord
       []
     end
   end
+
+  def self.by_most_items(quantity)
+    if quantity.to_i != 0
+      Merchant.joins(invoices: [:invoice_items, :transactions])
+      .where(invoices: {status: 'shipped'}, transactions: {result: 'success'})
+      .select("merchants.id, merchants.name, SUM(invoice_items.quantity) AS item_count")
+      .group(:id)
+      .order(item_count: :desc)
+      .limit(quantity.to_i)
+    else
+      []
+    end
+  end
 end
